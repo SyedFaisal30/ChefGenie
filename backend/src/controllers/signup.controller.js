@@ -8,17 +8,16 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendEmail } from "../services/verifyemail.js";
 
 export const signup = asyncHandler(async (req, res, next) => {
-  try {
     const { username, email, password } = req.body;
 
     const existingUsername = await User.findOne({ username });
     if (existingUsername) {
-      return next(new ApiError(400, "Username already exists"));
+      return res.statistus(400).json(new ApiError(400, "Username already exists"));
     }
 
     const existingEmail = await User.findOne({ email });
     if (existingEmail) {
-      return next(new ApiError(400, "Email already exists"));
+      return res.status(400).json(new ApiError(400, "Email already exists"));
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -39,7 +38,4 @@ export const signup = asyncHandler(async (req, res, next) => {
     res
       .status(201)
       .json(new ApiResponse(201, null, "Verification code sent to your email"));
-  } catch (error) {
-    next(new ApiError(500, "Something went wrong"));
-  }
 });

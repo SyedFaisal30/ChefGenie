@@ -5,21 +5,20 @@ import { User } from "../models/user.model.js";
 import { Verification } from "../models/verification.model.js";
 
 export const verify = asyncHandler(async (req, res, next) => {
-    try {
         const { username, code } = req.body;
 
         if( !username || !code ){
-            return next(new ApiError(400, "Username and verification code are required"));
+            return res.status(400).json(new ApiError(400, "Username and verification code are required"));
         }
 
         const userVerification = await Verification.findOne({ username, code });
 
         if (!userVerification) {
-            return next(new ApiError(400, "Invalid verification code"));
+            return res.status(400).json(new ApiError(400, "Invalid verification code"));
         }
 
         if ( userVerification.expiresAt < new Date() ) {
-            return next (new ApiError(400, "Verification code has expired"));   
+            return res.status(400).json(new ApiError(400, "Verification code has expired"));   
         }
 
         const newUser = await User.create({
@@ -30,9 +29,5 @@ export const verify = asyncHandler(async (req, res, next) => {
 
         await Verification.deleteOne({ username });
 
-        return res.status(200).json(new ApiResponse(200, newUser, "User created successfully"));
-    } catch (error) {
-        next(new ApiError(500, "Something went wrong", error instanceof Error ? [error.message] : [], error.stack));
-    }
-    
+        return res.status(200).json(new ApiResponse(200, newUser, "User created successfully"));    
 });
