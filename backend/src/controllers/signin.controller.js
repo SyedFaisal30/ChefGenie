@@ -11,19 +11,19 @@ export const signin = asyncHandler(async (req, res) => {
         const { email, password } = req.body;
 
         if (!email || !password) {
-            return res.status(404).json(new ApiError(400, "Email and password are required"));
+            return res.status(404).json(new ApiError(400, false, "Email and password are required", []));
         }
 
         const user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(404).json(new ApiError(400, "User not found"));
+            return res.status(404).json(new ApiError(400, false, "User not found", []));
         }
 
         const isPasswordMatch = await bcrypt.compare(password, user.password);
 
         if (!isPasswordMatch) {
-            return res.status(404).json(new ApiError(400, "Invalid password"));
+            return res.status(404).json(new ApiError(400, false, "Invalid password", []));
         }
 
         const accessToken = jwt.sign(
