@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -8,21 +8,37 @@ const Header = () => {
   useEffect(() => {
     const checkUser = () => {
       const storedUsername = localStorage.getItem("username");
-      setUsername(storedUsername); 
+      setUsername(storedUsername);
     };
 
     checkUser();
-    window.addEventListener("storage", checkUser); 
+    window.addEventListener("storage", checkUser);
 
     return () => window.removeEventListener("storage", checkUser);
   }, []);
 
-  // Logout function
-  const handleLogout = () => {
-    localStorage.removeItem("username");
-    localStorage.removeItem("accessToken");
-    setUsername(null); 
-    window.location.reload(); 
+  // Signout function
+  const handleLogout = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/api/users/signout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      const data = await res.json();
+      console.log("Signout Response:", data);
+
+      if (res.ok) {
+        localStorage.removeItem("username");
+        localStorage.removeItem("accessToken");
+
+        window.location.reload();
+      } else {
+        console.error("Signout failed:", data.message);
+      }
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   return (
@@ -38,7 +54,7 @@ const Header = () => {
                 className="flex items-center gap-2 text-gray-800 bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300 transition-all"
               >
                 <FaUserCircle className="text-lg" />
-                {username}
+                Hii {username}
               </button>
             ) : (
               <a
@@ -50,17 +66,18 @@ const Header = () => {
               </a>
             )}
 
-            {isDropdownOpen && username && (
-              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg border border-gray-200 rounded-lg p-3">
-                <p className="text-gray-800 font-semibold">{username}</p>
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-left text-red-500 hover:text-red-700 text-sm mt-2"
-                >
-                  Logout
-                </button>
-              </div>
-            )}
+{isDropdownOpen && username && (
+  <button
+    onClick={handleLogout}
+    className="flex items-center justify-left gap-2 absolute mt-2 w-28 bg-white shadow-lg border border-gray-200 rounded-lg p-3 hover:bg-gray-100 transition"
+  >
+    <FaSignOutAlt className="text-red-500" />
+    <p className="text-gray-800 font-semibold">{username}</p>
+    {/* <span className="text-red-500 hover:text-red-700 text-sm">Logout</span> */}
+  </button>
+)}
+
+
           </div>
         </div>
       </div>
