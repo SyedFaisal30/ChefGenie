@@ -48,6 +48,6 @@ export const signin = asyncHandler(async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
-        return res.status(200).json(new ApiResponse(200, "User signed in successfully", { accessToken,refreshToken }));
+        return res.status(200).json(new ApiResponse(200, "User signed in successfully", { accessToken, refreshToken, username: user.username  }));
 });
 
