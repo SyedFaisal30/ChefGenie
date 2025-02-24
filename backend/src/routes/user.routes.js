@@ -16,6 +16,6 @@ const router = Router()
 
  router.route("/signout").post(signout);
 
- router.route("/create-post",verifyJWT,createpost);
+ router.route("/create-post").post(verifyJWT,createpost);
 
 export default router;

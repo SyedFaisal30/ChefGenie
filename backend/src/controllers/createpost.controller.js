@@ -6,6 +6,7 @@ import { User } from "../models/user.model.js";
 
 export const createpost = asyncHandler(async (req, res) => {
     const { title, ingredients, instructions, tags } = req.body;
+    console.log("createpost route hitting");
 
     if (!title || typeof title !== "string" || title.trim().length < 3) {
         return res.status(400).json(new ApiError(400, "Title must be at least 3 characters long"));

@@ -4,16 +4,22 @@ import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
 
 export const verifyJWT = asyncHandler(async (req, res, next) => {
+    console.log("verifyJWT middleware");
+    
 
-    const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ","");
+    const token = req.cookies?.accessToken ||
+    (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")
+        ? req.headers.authorization.split(" ")[1]
+        : null);
 
     if(!token){
         return res.status(401).json(new ApiError(401, "Please login to continue"));
     }
 
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    console.log("Decoded Token:", decodedToken);
 
-    const user = await User.findById(decodedToken?._id).select("-password -refreshToken");
+    const user = await User.findById(decodedToken.userId).select("-password -refreshToken");
 
     if(!user){
         return res.status(401).json(new ApiError(401, "Invalid Token"));
