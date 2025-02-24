@@ -12,8 +12,10 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
         ? req.headers.authorization.split(" ")[1]
         : null);
 
+    console.log("Extracted Token:", token);
+
     if(!token){
-        return res.status(401).json(new ApiError(401, "Please login to continue"));
+        return res.status(401).json(new ApiError(401, false, "Please login to continue", []));
     }
 
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
