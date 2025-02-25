@@ -4,6 +4,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link } from "react-router-dom"; // Import Link for navigation
 
 const SignInForm = () => {
   const {
@@ -29,15 +30,14 @@ const SignInForm = () => {
       const { message } = res.data;
       const { accessToken } = message;
       const { refreshToken } = message;
-      
       const { username } = message;
       const { email } = data;
- 
+
       console.log("Full API Response:", res.data);
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("username", username);
-      localStorage.setItem("email", email)
+      localStorage.setItem("email", email);
 
       toast.success("Signed in successfully!", { autoClose: 1000 });
 
@@ -54,7 +54,7 @@ const SignInForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f8f8f8]">
+    <div className="h-[80vh] flex items-center justify-center bg-[#f8f8f8]">
       <ToastContainer position="top-right" />
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
@@ -107,6 +107,17 @@ const SignInForm = () => {
             )}
           </button>
         </form>
+
+        {/* Sign Up Link */}
+        <div className="mt-4 text-center">
+          <span className="text-gray-600">New user? </span>
+          <Link
+            to="/signup" // Replace with your sign-up route
+            className="text-yellow-600 font-semibold hover:underline"
+          >
+            Sign Up
+          </Link>
+        </div>
       </div>
     </div>
   );

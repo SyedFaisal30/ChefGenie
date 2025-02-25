@@ -68,7 +68,7 @@ const Header = () => {
             )}
 
             {isDropdownOpen && username && (
-              <div className="absolute mt-2 w-48 bg-white shadow-lg border border-gray-200 rounded-lg p-3 space-y-2">
+              <div className="absolute mt-2 w-30 bg-white shadow-lg border border-gray-200 rounded-lg right-1">
                 <Link
                   to="/user-profile" // Replace with your profile route
                   className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 p-2 rounded-md transition"

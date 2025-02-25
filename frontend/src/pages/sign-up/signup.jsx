@@ -6,6 +6,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom"; // Import Link for navigation
 
 const SignupForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({
@@ -112,6 +113,17 @@ const SignupForm = () => {
                 {loading ? <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span> : "Sign Up"}
               </button>
             </form>
+
+            {/* Sign In Link */}
+            <div className="mt-4 text-center">
+              <span className="text-gray-600">Already have an account? </span>
+              <Link
+                to="/signin" // Replace with your sign-in route
+                className="text-yellow-600 font-semibold hover:underline"
+              >
+                Sign In
+              </Link>
+            </div>
           </>
         )}
 
