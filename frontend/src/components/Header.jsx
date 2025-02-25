@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
+import { FaUserCircle, FaSignOutAlt, FaUser } from "react-icons/fa";
+import { Link } from "react-router-dom"; // Assuming you're using react-router-dom for navigation
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -66,18 +67,24 @@ const Header = () => {
               </a>
             )}
 
-{isDropdownOpen && username && (
-  <button
-    onClick={handleLogout}
-    className="flex items-center justify-left gap-2 absolute mt-2 w-28 bg-white shadow-lg border border-gray-200 rounded-lg p-3 hover:bg-gray-100 transition"
-  >
-    <FaSignOutAlt className="text-red-500" />
-    <p className="text-gray-800 font-semibold">{username}</p>
-    {/* <span className="text-red-500 hover:text-red-700 text-sm">Logout</span> */}
-  </button>
-)}
-
-
+            {isDropdownOpen && username && (
+              <div className="absolute mt-2 w-48 bg-white shadow-lg border border-gray-200 rounded-lg p-3 space-y-2">
+                <Link
+                  to="/user-profile" // Replace with your profile route
+                  className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 p-2 rounded-md transition"
+                >
+                  <FaUser className="text-blue-500" />
+                  <span>Profile</span>
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 p-2 rounded-md transition w-full"
+                >
+                  <FaSignOutAlt className="text-red-500" />
+                  <span>Logout</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -23,8 +23,8 @@ const router = Router()
 
  router.route("/get-user-post").get(verifyJWT,getUserPosts);
 
- router.route("/update-post/:id").put(verifyJWT,updatePost);
+ router.route("/update-post/:postId").put(verifyJWT,updatePost);
 
- router.route("/delete-post/:id").delete(verifyJWT,deletePost);
+ router.route("/delete-post/:postId").delete(verifyJWT,deletePost);
 
 export default router;

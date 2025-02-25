@@ -29,7 +29,7 @@ export const signin = asyncHandler(async (req, res) => {
         const accessToken = jwt.sign(
             { userId: user._id },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: "15m" }
+            { expiresIn: "7d" }
         );
 
         const refreshToken = jwt.sign(

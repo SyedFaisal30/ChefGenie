@@ -2,18 +2,23 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import { Post } from "../models/post.model.js";
+import mongoose from "mongoose";
 
 export const updatePost = asyncHandler( async (req, res) => {
     const { postId } = req.params;
     const { title, ingredients, instructions, tags } = req.body;
     const userId = req.user._id;
 
-    const post = await Post.findOne({ _id: postId, author: userId });
-
+    console.log("POST ID ",postId, " USER ID ", userId);
+    
+    const post = await Post.findOne({
+        _id: new mongoose.Types.ObjectId(postId), 
+        author: new mongoose.Types.ObjectId(userId),       
+    });     
+    // console.log("POST ID ",postId, " USER ID ", userId);
     if (!post) {
-        return res.status(404).json(new ApiError(404, "Post not found or you are not authorized"));
+        return res.status(404).json(new ApiError(404, false, "Post not found or you are not authorized", []));
     }
-
 
     post.title = title || post.title;
     post.ingredients = ingredients || post.ingredients;

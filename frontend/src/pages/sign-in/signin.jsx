@@ -28,12 +28,14 @@ const SignInForm = () => {
 
       const { message } = res.data;
       const { accessToken } = message;
+      const { refreshToken } = message;
       
       const { username } = message;
       const { email } = data;
  
       console.log("Full API Response:", res.data);
       localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("username", username);
       localStorage.setItem("email", email)
 
