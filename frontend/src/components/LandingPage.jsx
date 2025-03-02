@@ -1,7 +1,6 @@
-"use client";
-
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { Link } from "react-router-dom"; // Import React Router Link
 import { FaMagic, FaSearch, FaUtensils } from "react-icons/fa";
 
 const LandingPage = () => {
@@ -35,49 +34,55 @@ const LandingPage = () => {
         A genie that fulfills your <span className="text-yellow-600">3 wishes</span> at least!
       </motion.p>
 
-      {/* Feature Sections */}
+      {/* Feature Sections with Links */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 px-8 mt-16 max-w-6xl mx-auto">
         {/* Feature 1 - Generate Dish */}
-        <motion.div
-          initial={{ x: -100, opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="p-6 bg-white rounded-lg shadow-md hover:scale-105 transition-transform duration-300 border border-gray-300"
-        >
-          <FaMagic className="text-yellow-600 text-5xl mb-4" />
-          <h2 className="text-2xl font-bold">Generate a Dish</h2>
-          <p className="mt-2 text-gray-700">
-            Tell the genie at least 5 food items, and it will create a magical dish for you!
-          </p>
-        </motion.div>
+        <Link to="/get-posts">
+          <motion.div
+            initial={{ x: -100, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{ duration: 1 }}
+            className="p-6 bg-white rounded-lg shadow-md hover:scale-105 transition-transform duration-300 border border-gray-300 cursor-pointer"
+          >
+            <FaMagic className="text-yellow-600 text-5xl mb-4" />
+            <h2 className="text-2xl font-bold">Generate a Dish</h2>
+            <p className="mt-2 text-gray-700">
+              Tell the genie at least 5 food items, and it will create a magical dish for you!
+            </p>
+          </motion.div>
+        </Link>
 
         {/* Feature 2 - Find Any Recipe */}
-        <motion.div
-          initial={{ y: 100, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="p-6 bg-white rounded-lg shadow-md hover:scale-105 transition-transform duration-300 border border-gray-300"
-        >
-          <FaSearch className="text-blue-600 text-5xl mb-4" />
-          <h2 className="text-2xl font-bold">Find Any Recipe</h2>
-          <p className="mt-2 text-gray-700">
-            Search for any recipe you desire, and let the genie show you the way!
-          </p>
-        </motion.div>
+        <Link to="/get-posts">
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="p-6 bg-white rounded-lg shadow-md hover:scale-105 transition-transform duration-300 border border-gray-300 cursor-pointer"
+          >
+            <FaSearch className="text-blue-600 text-5xl mb-4" />
+            <h2 className="text-2xl font-bold">Find Any Recipe</h2>
+            <p className="mt-2 text-gray-700">
+              Search for any recipe you desire, and let the genie show you the way!
+            </p>
+          </motion.div>
+        </Link>
 
         {/* Feature 3 - Post Your Dish */}
-        <motion.div
-          initial={{ x: 100, opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          transition={{ duration: 1, delay: 0.4 }}
-          className="p-6 bg-white rounded-lg shadow-md hover:scale-105 transition-transform duration-300 border border-gray-300"
-        >
-          <FaUtensils className="text-red-600 text-5xl mb-4" />
-          <h2 className="text-2xl font-bold">Post Your Dish</h2>
-          <p className="mt-2 text-gray-700">
-            Share your unique creations with the world and inspire others!
-          </p>
-        </motion.div>
+        <Link to="/get-posts">
+          <motion.div
+            initial={{ x: 100, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="p-6 bg-white rounded-lg shadow-md hover:scale-105 transition-transform duration-300 border border-gray-300 cursor-pointer"
+          >
+            <FaUtensils className="text-red-600 text-5xl mb-4" />
+            <h2 className="text-2xl font-bold">Post Your Dish</h2>
+            <p className="mt-2 text-gray-700">
+              Share your unique creations with the world and inspire others!
+            </p>
+          </motion.div>
+        </Link>
       </div>
 
       {/* Call to Action */}
