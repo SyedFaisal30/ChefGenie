@@ -5,6 +5,7 @@ import LandingPage from "./components/LandingPage"
 import SignupForm from "./pages/sign-up/signup"
 import SignInForm from "./pages/sign-in/signin"
 import UserProfile from "./pages/user-profile/userProfile"
+import GetPost from "./pages/get-posts/posts"
 function App() {
 
   return (
@@ -20,6 +21,8 @@ function App() {
           <Route path = "/signin" element = {<SignInForm/>}/>
 
           <Route path = "/user-profile" element = {<UserProfile/>}/>
+
+          <Route path = "/get-posts" element = {<GetPost/>}/>
           
         </Routes>
 

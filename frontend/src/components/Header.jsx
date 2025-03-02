@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaUserCircle, FaSignOutAlt, FaUser } from "react-icons/fa";
-import { Link } from "react-router-dom"; // Assuming you're using react-router-dom for navigation
+import { Link } from "react-router-dom"; 
 
 const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -70,7 +70,7 @@ const Header = () => {
             {isDropdownOpen && username && (
               <div className="absolute mt-2 w-30 bg-white shadow-lg border border-gray-200 rounded-lg right-1">
                 <Link
-                  to="/user-profile" // Replace with your profile route
+                  to="/user-profile" 
                   className="flex items-center gap-2 text-gray-800 hover:bg-gray-100 p-2 rounded-md transition"
                 >
                   <FaUser className="text-blue-500" />

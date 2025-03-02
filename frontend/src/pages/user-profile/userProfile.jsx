@@ -205,7 +205,7 @@ const UserProfile = () => {
 
         {/* Update Post Modal */}
         {isUpdateModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
               <h2 className="text-xl font-bold mb-4">Edit Post</h2>
               <input type="text" name="title" value={postData.title} onChange={handleInputChange} className="w-full mb-2 p-2 border rounded" placeholder="Title" />
@@ -222,7 +222,7 @@ const UserProfile = () => {
 
         {/* Delete Confirmation Modal */}
         {isDeleteModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
               <h2 className="text-xl font-bold mb-4">Confirm Delete</h2>
               <p className="mb-4">Are you sure you want to delete this post? This action cannot be undone.</p>

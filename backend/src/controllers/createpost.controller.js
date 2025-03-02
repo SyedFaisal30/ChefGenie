@@ -26,6 +26,7 @@ export const createpost = asyncHandler(async (req, res) => {
         instructions: instructions.trim(),
         tags: tags || [],
         author: req.user._id,
+        username: req.user.username,
     });
 
     return res.status(200).json(new ApiResponse(200, post, "Post created successfully"));

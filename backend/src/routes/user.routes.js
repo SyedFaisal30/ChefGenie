@@ -8,6 +8,7 @@ import { createpost } from "../controllers/createpost.controller.js";
 import { getUserPosts } from "../controllers/getuserpost.controller.js";
 import { updatePost } from "../controllers/updatepost.controller.js";
 import { deletePost } from "../controllers/deletepost.controller.js";
+import { getPost } from "../controllers/getpost.controller.js";
 import { verifyJWT } from "../middlewares/verifyJWT.middleware.js";
 
 const router = Router()
@@ -26,5 +27,7 @@ const router = Router()
  router.route("/update-post/:postId").put(verifyJWT,updatePost);
 
  router.route("/delete-post/:postId").delete(verifyJWT,deletePost);
+
+ router.route("/get-posts").get(getPost);
 
 export default router;

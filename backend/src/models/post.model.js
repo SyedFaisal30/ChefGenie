@@ -25,6 +25,11 @@ const postSchema = new Schema(
             ref: "User",
             required: [true, "Author is required"],
         },
+        username: {
+            type: String,
+            required: [true, "Username is required"],
+            trim: true,
+        }
     },
     { timestamps: true}
 );
