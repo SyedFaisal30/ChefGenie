@@ -34,17 +34,9 @@ const UserProfile = () => {
     setLoading(true);
     setError("");
 
-    try {
-      const accessToken = localStorage.getItem("accessToken");
-      if (!accessToken) {
-        setError("Authentication error. Please log in again.");
-        setLoading(false);
-        return;
-      }
-
+    try {      
       const response = await axios.get("http://localhost:8000/api/users/get-user-post", {
         withCredentials: true,
-        headers: { Authorization: `Bearer ${accessToken}` },
       });
 
       setPosts(response.data.message || []);

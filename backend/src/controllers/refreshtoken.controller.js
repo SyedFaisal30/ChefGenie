@@ -21,7 +21,7 @@ export const refreshToken = asyncHandler(async (req, res) => {
     const accessToken = jwt.sign(
         { userId: user._id },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: "15m" }
+        { expiresIn: "1d" }
     );
 
     const newRefreshToken = jwt.sign(
@@ -33,9 +33,16 @@ export const refreshToken = asyncHandler(async (req, res) => {
     user.refreshToken = newRefreshToken;
     await user.save();
 
+    res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "Strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000, 
+    });
+
     res.cookie("refreshToken", newRefreshToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         sameSite: "Strict",
         maxAge: 7 * 24 * 60 * 60 * 1000, 
     });

@@ -4,7 +4,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { Link, useNavigate } from "react-router-dom"; // Import Link for navigation
 
 const SignInForm = () => {
   const {
@@ -15,6 +15,7 @@ const SignInForm = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -27,23 +28,19 @@ const SignInForm = () => {
         }
       );
 
-      const { message } = res.data;
-      const { accessToken } = message;
-      const { refreshToken } = message;
-      const { username } = message;
+      const { accessTokenExpiry, refreshTokenExpiry, username } = res.data.message;
       const { email } = data;
 
-      console.log("Full API Response:", res.data);
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("ate", accessTokenExpiry);
+      localStorage.setItem("rte", refreshTokenExpiry);
       localStorage.setItem("username", username);
       localStorage.setItem("email", email);
 
       toast.success("Signed in successfully!", { autoClose: 1000 });
 
       setTimeout(() => {
-        window.location.href = "/";
-      }, 1000);
+        window.location.href = "/get-posts";
+      }, 1000);    
     } catch (error) {
       toast.error(error.response?.data?.message || "Invalid credentials", {
         autoClose: 3000,
