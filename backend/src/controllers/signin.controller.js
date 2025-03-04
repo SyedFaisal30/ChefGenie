@@ -5,9 +5,7 @@ import { User } from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
-export const signin = asyncHandler(async (req, res) => {
-        console.log("signin route hitting");
-        
+export const signin = asyncHandler(async (req, res) => {        
         const { email, password } = req.body;
 
         if (!email || !password) {
@@ -48,6 +46,6 @@ export const signin = asyncHandler(async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
-        return res.status(200).json(new ApiResponse(200, "User signed in successfully", { accessToken, refreshToken, username: user.username  }));
+        return res.status(200).json(new ApiResponse(200, "User signed in successfully", { accessToken, username: user.username  }));
 });
 

@@ -7,6 +7,11 @@ export const signout = asyncHandler(async (req, res, next) => {
         const refreshToken = req.cookies.refreshToken;
 
         if (!refreshToken) {
+            res.clearCookie("refreshToken", {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "Strict",
+            });
             return res.status(400).json(new ApiError(400, false, "No refresh token found, user already signed out", []));
         }
 
@@ -25,5 +30,5 @@ export const signout = asyncHandler(async (req, res, next) => {
             sameSite: "strict",
         });
 
-        res.status(200).json(new ApiResponse(200, null, "User signed out successfully"));
+        res.status(200).json(new ApiResponse(200, "User signed out successfully"));
 });
