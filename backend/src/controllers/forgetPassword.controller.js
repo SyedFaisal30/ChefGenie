@@ -25,7 +25,7 @@ export const forgetPassword = asyncHandler (async (req, res) => {
         { expiresIn: "15m" }
     );
 
-    const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
+    const resetLink = `http://localhost:5173/reset-password?token=${resetToken}`;
 
     await sendForgetPasswordEmail(user.email, resetLink);
 

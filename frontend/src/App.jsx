@@ -4,6 +4,7 @@ import Footer from "./components/Footer"
 import LandingPage from "./components/LandingPage"
 import SignupForm from "./pages/sign-up/signup"
 import SignInForm from "./pages/sign-in/signin"
+import ResetPassword from "./pages/reset-password/reset-password"
 import UserProfile from "./pages/user-profile/userProfile"
 import GetPost from "./pages/get-posts/posts"
 import { useState, useEffect } from "react"
@@ -95,7 +96,8 @@ useEffect(() => {
           < Route path = "/user-profile" element = {isLoggedIn ?  <UserProfile/> : <Navigate to="/" />}/>
 
           <Route path = "/get-posts" element = {<GetPost/>}/>
-          
+
+          <Route path = "/reset-password" element = {<ResetPassword/>}/>
         </Routes>
 
       <Footer/>

@@ -4,8 +4,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom"; // Import Link for navigation
-
+import { Link, useNavigate } from "react-router-dom"; 
 const SignInForm = () => {
   const {
     register,
@@ -15,6 +14,8 @@ const SignInForm = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
+  const [emailForReset, setEmailForReset] = useState("");
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
@@ -40,13 +41,34 @@ const SignInForm = () => {
 
       setTimeout(() => {
         window.location.href = "/get-posts";
-      }, 1000);    
+      }, 1000);
     } catch (error) {
       toast.error(error.response?.data?.message || "Invalid credentials", {
         autoClose: 3000,
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!emailForReset) {
+      toast.error("Please enter your email first.");
+      return;
+    }
+
+    setResetLoading(true);
+    try {
+      const res = await axios.post(
+        "http://localhost:8000/api/users/forget-password",
+        { email: emailForReset }
+      );
+
+      toast.success(res.data.message);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setResetLoading(false);
     }
   };
 
@@ -66,6 +88,7 @@ const SignInForm = () => {
               {...register("email", { required: "Email is required" })}
               className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-yellow-500 outline-none"
               placeholder="Enter your email"
+              onChange={(e) => setEmailForReset(e.target.value)}
             />
             {errors.email && (
               <p className="text-red-500 text-sm">{errors.email.message}</p>
@@ -90,6 +113,18 @@ const SignInForm = () => {
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password.message}</p>
             )}
+          </div>
+
+          {/* Forgot Password Button */}
+          <div className="text-right">
+            <button
+              type="button"
+              onClick={handleForgotPassword}
+              className="text-yellow-600 font-semibold text-sm hover:underline"
+              disabled={resetLoading}
+            >
+              {resetLoading ? "Sending..." : "Forgot Password?"}
+            </button>
           </div>
 
           <button
