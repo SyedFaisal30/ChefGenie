@@ -53,7 +53,7 @@ const LandingPage = () => {
         </Link>
 
         {/* Feature 2 - Find Any Recipe */}
-        <Link to="/get-posts">
+        <Link to="/meal-finder">
           <motion.div
             initial={{ y: 100, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import NavigationButtons from "../../components/NavigationButtons";
 import axios from "axios";
 
 export default function GetPost() {
@@ -26,6 +27,7 @@ export default function GetPost() {
 
   return (
     <div className="min-h-screen bg-[#f8f8f8] flex flex-col items-center justify-center p-4">
+      <NavigationButtons/>
       {posts.map((post) => (
         <div key={post._id} className="bg-white p-6 rounded-lg shadow-lg w-[90%] md:w-[70%] max-w-3xl mb-6">
           {/* Title & Author */}
