@@ -4,7 +4,7 @@ import { FaRobot, FaUtensils, FaClipboardList } from "react-icons/fa";
 const NavigationButtons = () => {
   return (
     <div className="flex justify-center">
-      <div className="flex gap-4 bg-yellow-500 p-3 rounded-full shadow-lg">
+      <div className="flex gap-4 bg-yellow-500 p-3 rounded-full shadow-lg mb-3">
         {/* Generate AI Button */}
         <Link to="/generate-ai" className="flex items-center gap-2 bg-white text-gray-800 px-5 py-2 rounded-full font-semibold shadow-md hover:bg-gray-100 transition">
           <FaRobot size={20} />

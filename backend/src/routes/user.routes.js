@@ -13,6 +13,7 @@ import { updatePost } from "../controllers/updatepost.controller.js";
 import { deletePost } from "../controllers/deletepost.controller.js";
 import { getPost } from "../controllers/getpost.controller.js";
 import { verifyJWT } from "../middlewares/verifyJWT.middleware.js";
+import { verifyPrompt } from "../controllers/verifyPrompt.controller.js";
 
 const router = Router()
  router.route("/signup").post(validateSignup, signup);
@@ -38,5 +39,7 @@ const router = Router()
  router.route("/forget-password").post(forgetPassword);
 
  router.route("/reset-password").post(resetPassowrd);
+
+ router.route("/verify-prompt").post(verifyPrompt)
 
 export default router;
