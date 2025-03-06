@@ -14,6 +14,7 @@ import { deletePost } from "../controllers/deletepost.controller.js";
 import { getPost } from "../controllers/getpost.controller.js";
 import { verifyJWT } from "../middlewares/verifyJWT.middleware.js";
 import { verifyPrompt } from "../controllers/verifyPrompt.controller.js";
+import { generateRecipe } from "../controllers/recipeGenerator.controller.js";
 
 const router = Router()
  router.route("/signup").post(validateSignup, signup);
@@ -40,6 +41,8 @@ const router = Router()
 
  router.route("/reset-password").post(resetPassowrd);
 
- router.route("/verify-prompt").post(verifyPrompt)
+ router.route("/verify-prompt").post(verifyPrompt);
+
+ router.route("/generate-recipe").post(generateRecipe);
 
 export default router;
