@@ -15,6 +15,7 @@ import { getPost } from "../controllers/getpost.controller.js";
 import { verifyJWT } from "../middlewares/verifyJWT.middleware.js";
 import { verifyPrompt } from "../controllers/verifyPrompt.controller.js";
 import { generateRecipe } from "../controllers/recipeGenerator.controller.js";
+import { getUserAiRecipes } from "../controllers/getAiRecipes.controller.js";
 
 const router = Router()
  router.route("/signup").post(validateSignup, signup);
@@ -43,6 +44,8 @@ const router = Router()
 
  router.route("/verify-prompt").post(verifyPrompt);
 
- router.route("/generate-recipe").post(generateRecipe);
+ router.route("/generate-ai").post(generateRecipe);
+
+ router.route("/get-ai-recipes/:username").get(getUserAiRecipes);
 
 export default router;

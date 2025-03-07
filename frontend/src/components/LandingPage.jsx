@@ -37,7 +37,7 @@ const LandingPage = () => {
       {/* Feature Sections with Links */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 px-8 mt-16 max-w-6xl mx-auto">
         {/* Feature 1 - Generate Dish */}
-        <Link to="/get-posts">
+        <Link to="/generate-ai">
           <motion.div
             initial={{ x: -100, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}

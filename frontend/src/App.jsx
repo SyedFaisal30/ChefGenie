@@ -8,6 +8,7 @@ import ResetPassword from "./pages/reset-password/reset-password";
 import UserProfile from "./pages/user-profile/userProfile";
 import GetPost from "./pages/get-posts/posts";
 import MealFinder from "./pages/mealFinder/mealFinder";
+import RecipeChat from "./pages/recipe-genrator/recipeChat";
 import { useState, useEffect } from "react";
 function App() {
   const navigate = useNavigate();
@@ -101,6 +102,8 @@ function App() {
           <Route path="/get-posts" element={<GetPost />} />
 
           <Route path="/meal-finder" element={isLoggedIn ? <MealFinder /> : <Navigate to="/" />}/>
+
+          <Route path="/generate-ai" element={isLoggedIn ? <RecipeChat /> : <Navigate to="/"/>} />
         </Routes>
 
         <Footer />

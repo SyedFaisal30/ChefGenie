@@ -5,14 +5,14 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Recipe } from "../models/recipe.model.js";
 
 export const generateRecipe = asyncHandler(async (req, res) => {
-  const { prompt, userId } = req.body;
+  const { prompt, username } = req.body;
 
   if (!prompt) {
     return res.status(400).json(new ApiError(400, false, "Prompt required"));
   }
 
-  if (!userId) {
-    return res.status(400).json(new ApiError(400, "User ID required"));
+  if (!username) {
+    return res.status(400).json(new ApiError(400, "User Name required"));
   }
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -46,7 +46,7 @@ export const generateRecipe = asyncHandler(async (req, res) => {
     title: recipe.title,
     ingredients: recipe.ingredients,
     instructions: recipe.instructions.join("\n"),
-    user: userId,
+    user: username,
   });
 
   await newRecipe.save();
