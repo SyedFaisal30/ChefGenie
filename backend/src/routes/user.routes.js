@@ -16,6 +16,7 @@ import { verifyJWT } from "../middlewares/verifyJWT.middleware.js";
 import { verifyPrompt } from "../controllers/verifyPrompt.controller.js";
 import { generateRecipe } from "../controllers/recipeGenerator.controller.js";
 import { getUserAiRecipes } from "../controllers/getAiRecipes.controller.js";
+import { deleteAiRecipe } from "../controllers/deleteAiRecipe.cotroller.js";
 
 const router = Router()
  router.route("/signup").post(validateSignup, signup);
@@ -47,5 +48,7 @@ const router = Router()
  router.route("/generate-ai").post(generateRecipe);
 
  router.route("/get-ai-recipes/:username").get(getUserAiRecipes);
+
+ router.route("/delete-recipe/:recipeId").delete(verifyJWT,deleteAiRecipe);
 
 export default router;

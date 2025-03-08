@@ -4,7 +4,6 @@ import { ApiError } from "../utils/ApiError.js";
 import { Post } from "../models/post.model.js";
 
 export const deletePost = asyncHandler(async (req, res) => {
-    console.log("Delete post route hit");
 
     const { postId } = req.params;
     const userId = req.user._id; 

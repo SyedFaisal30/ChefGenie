@@ -28,6 +28,7 @@ export const generateRecipe = asyncHandler(async (req, res) => {
         - If the user provides ingredients, suggest a dish that can be made from them.
         - If adding more ingredients improves the dish, recommend them.
         - If the user asks for a specific dish, provide a structured recipe.
+        - Intructions should be step wise.
         - Avoid Spelling mistakes and typos.
         
         The recipe should be formatted as JSON with:

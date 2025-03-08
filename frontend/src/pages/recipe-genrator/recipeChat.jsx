@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { FaPaperPlane } from "react-icons/fa";
+import { FaPaperPlane, FaTrash } from "react-icons/fa";
 import { GoSidebarExpand, GoSidebarCollapse } from "react-icons/go";
 import NavigationButtons from "../../components/NavigationButtons";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function RecipeChat() {
   const [prompt, setPrompt] = useState("");
@@ -12,13 +14,11 @@ export default function RecipeChat() {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({ username: "" });
 
-  // Load username from localStorage
   useEffect(() => {
     const username = localStorage.getItem("username");
     if (username) setUser({ username });
   }, []);
 
-  // Fetch recipes when user.username updates
   useEffect(() => {
     if (user.username) fetchUserRecipes();
   }, [user.username]);
@@ -28,7 +28,7 @@ export default function RecipeChat() {
       const { data } = await axios.get(
         `http://localhost:8000/api/users/get-ai-recipes/${user.username}`
       );
-      setRecipes(data.data);
+      setRecipes(data?.data || []);
     } catch (error) {
       console.error("Error fetching recipes:", error);
     }
@@ -37,7 +37,6 @@ export default function RecipeChat() {
   const handleGenerateRecipe = async () => {
     if (!prompt.trim()) return;
     setLoading(true);
-
     try {
       const { data } = await axios.post(
         "http://localhost:8000/api/users/generate-ai",
@@ -46,7 +45,6 @@ export default function RecipeChat() {
           username: user.username,
         }
       );
-
       setRecipes((prev) => [data.data, ...prev]);
       setSelectedRecipe(data.data);
       setPrompt("");
@@ -57,17 +55,39 @@ export default function RecipeChat() {
     }
   };
 
+  const handleDeleteRecipe = async (recipeId) => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await axios.delete(
+        `http://localhost:8000/api/users/delete-recipe/${recipeId}`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          withCredentials: true,
+        }
+      );
+      if (response.status === 200) {
+        setRecipes((prevRecipes) =>
+          prevRecipes.filter((recipe) => recipe._id !== recipeId)
+        );
+        setSelectedRecipe(null);
+        toast.success("Recipe deleted successfully!");
+      }
+    } catch (error) {
+      console.error("Error deleting recipe:", error);
+      toast.error("Failed to delete recipe.");
+    }
+  };
+
   return (
-    <div className="h-screen bg-[#f8f8f8] flex flex-col items-center justify-center p-4">
+    <div className=" bg-[#f8f8f8] flex flex-col items-center justify-center p-4">
       <NavigationButtons />
-      <div className="flex h-screen bg-[#f8f8f8]">
-        {/* Sidebar */}
+      <ToastContainer position="top-right" autoClose={3000} />
+      <div className="flex  bg-[#f8f8f8]">
         <div
           className={`fixed left-0 top-16 h-[calc(100%-4rem)] bg-white shadow-lg p-4 transition-transform duration-300 ${
             sidebarOpen ? "w-72 translate-x-0" : "w-0 -translate-x-full"
           }`}
         >
-          {/* Collapse Button (Hide When Sidebar is Closed) */}
           {sidebarOpen && (
             <button
               onClick={() => setSidebarOpen(false)}
@@ -77,17 +97,27 @@ export default function RecipeChat() {
             </button>
           )}
 
-          <div className="space-y-2 overflow-y-auto h-[85%]">
+          <div className="space-y-2 overflow-y-auto ">
             <h2 className="text-xl font-bold mb-4">Generated Recipes</h2>
 
             {recipes.length > 0 ? (
-              recipes.map((recipe, index) => (
+              recipes.map((recipe) => (
                 <div
-                  key={index}
-                  className="p-3 bg-gray-200 rounded-lg cursor-pointer hover:bg-gray-300"
-                  onClick={() => setSelectedRecipe(recipe)}
+                  key={recipe._id}
+                  className="p-3 bg-gray-200 rounded-lg flex justify-between items-center cursor-pointer hover:bg-gray-300"
                 >
-                  <h3 className="font-semibold">{recipe.title}</h3>
+                  <h3
+                    className="font-semibold"
+                    onClick={() => setSelectedRecipe(recipe)}
+                  >
+                    {recipe.title}
+                  </h3>
+                  <button
+                    onClick={() => handleDeleteRecipe(recipe._id)}
+                    className="text-red-600 hover:text-red-800"
+                  >
+                    <FaTrash />
+                  </button>
                 </div>
               ))
             ) : (
@@ -96,7 +126,6 @@ export default function RecipeChat() {
           </div>
         </div>
 
-        {/* Sidebar Toggle (Show Only When Sidebar is Closed) */}
         {!sidebarOpen && (
           <button
             onClick={() => setSidebarOpen(true)}
@@ -105,73 +134,72 @@ export default function RecipeChat() {
             <GoSidebarCollapse />
           </button>
         )}
-
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col items-center justify-center p-6">
-          {/* Show Selected Recipe */}
-          {selectedRecipe ? (
-            <div className="w-full max-w-full bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-2xl font-bold mb-4">
-                {selectedRecipe.title}
-              </h3>
-
-              {/* Ingredients Section */}
-              <h4 className="text-xl font-semibold flex items-center">
-                🥬 Ingredients:
-              </h4>
-              <div className="flex flex-wrap gap-2 my-3">
-                {selectedRecipe.ingredients.map((ingredient, idx) => (
+      </div>
+      {/* Recipe Display Section */}
+      <div className="flex-1 flex flex-col items-center justify-center p-6">
+        {selectedRecipe ? (
+          <div className="w-full max-w-xl bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-2xl font-bold mb-4">{selectedRecipe.title}</h3>
+            <h4 className="text-xl font-semibold">🥬 Ingredients:</h4>
+            <div className="flex flex-wrap gap-2 my-3">
+              {selectedRecipe.ingredients?.length > 0 ? (
+                selectedRecipe.ingredients.map((ingredient, idx) => (
                   <span
                     key={idx}
                     className="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm"
                   >
                     {ingredient}
                   </span>
-                ))}
-              </div>
-
-              {/* Instructions Section */}
-              {/* Instructions Section */}
-              <h4 className="text-xl font-semibold flex items-center">
-                📜 Instructions:
-              </h4>
-              <div className="mt-2 space-y-2">
-                {typeof selectedRecipe.instructions === "string" ? (
+                ))
+              ) : (
+                <p className="text-gray-500">No ingredients available.</p>
+              )}
+            </div>
+            <h4 className="text-xl font-semibold">📜 Instructions:</h4>
+            <div className="mt-2 space-y-2">
+              {selectedRecipe?.instructions ? (
+                typeof selectedRecipe.instructions === "string" ? (
                   selectedRecipe.instructions.split("\n").map((step, idx) => (
                     <p key={idx} className="text-gray-700">
                       <strong>Step {idx + 1}:</strong> {step}
                     </p>
                   ))
                 ) : (
-                  <p className="text-gray-500">No instructions available.</p>
-                )}
-              </div>
+                  <p className="text-gray-500">
+                    Instructions are not in the correct format.
+                  </p>
+                )
+              ) : (
+                <p className="text-gray-500">No instructions available.</p>
+              )}
             </div>
-          ) : (
-            <p className="text-gray-500 text-lg text-center">
-              🤖 Enter ingredients or a dish name, and I'll tell you what to
-              make! 🍽️✨
-            </p>
-          )}
-
-          {/* Chat Input Box */}
-          <div className="w-full max-w-2xl flex items-center bg-white p-3 rounded-lg shadow-md mt-6">
-            <input
-              type="text"
-              placeholder="Enter ingredients or dish name..."
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              className="flex-1 p-2 border rounded-md outline-none"
-            />
-            <button
-              onClick={handleGenerateRecipe}
-              disabled={loading}
-              className="ml-3 p-2 bg-yellow-500 text-white rounded-lg"
-            >
-              {loading ? "Generating..." : <FaPaperPlane />}
-            </button>
           </div>
-        </div>
+        ) : (
+          <p className="text-gray-500 text-lg text-center">
+            🤖 Enter ingredients or a dish name, and I'll generate a recipe for
+            you! 🍽️✨
+          </p>
+        )}
+      </div>
+      <div className="w-full max-w-2xl flex items-center bg-white p-3 rounded-lg shadow-md mt-6">
+        <input
+          type="text"
+          placeholder="Enter ingredients or dish name..."
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+          className="flex-1 p-2 border rounded-md outline-none"
+        />
+        <button
+          onClick={handleGenerateRecipe}
+          disabled={loading}
+          className="ml-3 p-2 bg-yellow-500 text-white rounded-lg w-12 h-12 flex items-center justify-center"
+        >
+          {loading ? (
+            <span className="animate-spin border-4 border-t-transparent border-white rounded-full w-6 h-6"></span>
+          ) : (
+            <FaPaperPlane className="w-6 h-6" />
+          )}
+        </button>
       </div>
     </div>
   );
