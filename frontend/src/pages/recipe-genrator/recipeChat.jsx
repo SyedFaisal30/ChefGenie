@@ -79,10 +79,10 @@ export default function RecipeChat() {
   };
 
   return (
-    <div className=" bg-[#f8f8f8] flex flex-col items-center justify-center p-4">
+    <div className="h-[90vh]  bg-[#f8f8f8] flex flex-col items-center justify-center p-4">
       <NavigationButtons />
       <ToastContainer position="top-right" autoClose={3000} />
-      <div className="flex  bg-[#f8f8f8]">
+      <div className=" flex bg-[#f8f8f8]">
         <div
           className={`fixed left-0 top-16 h-[calc(100%-4rem)] bg-white shadow-lg p-4 transition-transform duration-300 ${
             sidebarOpen ? "w-72 translate-x-0" : "w-0 -translate-x-full"
@@ -136,7 +136,7 @@ export default function RecipeChat() {
         )}
       </div>
       {/* Recipe Display Section */}
-      <div className="flex-1 flex flex-col items-center justify-center p-6">
+      <div className="overflow-y-auto flex-1 flex flex-col items-center p-6">
         {selectedRecipe ? (
           <div className="w-full max-w-xl bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-2xl font-bold mb-4">{selectedRecipe.title}</h3>
@@ -157,22 +157,25 @@ export default function RecipeChat() {
             </div>
             <h4 className="text-xl font-semibold">📜 Instructions:</h4>
             <div className="mt-2 space-y-2">
-              {selectedRecipe?.instructions ? (
-                typeof selectedRecipe.instructions === "string" ? (
-                  selectedRecipe.instructions.split("\n").map((step, idx) => (
-                    <p key={idx} className="text-gray-700">
-                      <strong>Step {idx + 1}:</strong> {step}
-                    </p>
-                  ))
-                ) : (
-                  <p className="text-gray-500">
-                    Instructions are not in the correct format.
-                  </p>
-                )
-              ) : (
-                <p className="text-gray-500">No instructions available.</p>
-              )}
-            </div>
+  {selectedRecipe?.instructions ? (
+    Array.isArray(selectedRecipe.instructions) ? (
+      selectedRecipe.instructions.map((step, idx) => (
+        <p key={`${selectedRecipe._id}-step-${idx}`} className="text-gray-700">
+          <strong>Step {idx + 1}:</strong> {step}
+        </p>
+      ))
+    ) : (
+      selectedRecipe.instructions.split("\n").map((step, idx) => (
+        <p key={`${selectedRecipe._id}-step-${idx}`} className="text-gray-700">
+          <strong>Step {idx + 1}:</strong> {step}
+        </p>
+      ))
+    )
+  ) : (
+    <p className="text-gray-500">No instructions available.</p>
+  )}
+</div>
+
           </div>
         ) : (
           <p className="text-gray-500 text-lg text-center">

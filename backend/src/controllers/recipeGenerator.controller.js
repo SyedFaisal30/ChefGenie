@@ -23,21 +23,24 @@ export const generateRecipe = asyncHandler(async (req, res) => {
     },
   });
 
-  const query = `
-        Act as a professional chef. Analyze the following user prompt: "${prompt}".
-        - If the user provides ingredients, suggest a dish that can be made from them.
-        - If adding more ingredients improves the dish, recommend them.
-        - If the user asks for a specific dish, provide a structured recipe.
-        - Intructions should be step wise.
-        - Avoid Spelling mistakes and typos.
-        
-        The recipe should be formatted as JSON with:
-        {
-            "title": "Dish Name",
-            "ingredients": ["ingredient1", "ingredient2", "ingredient3"],
-            "instructions": ["Step 1", "Step 2", "Step 3", "Step 4"]
-        }
-    `;
+  const query = `  
+Act as a professional chef and generate a structured recipe based on the following user input: "${prompt}".  
+Follow these rules strictly:  
+- If the user provides ingredients, suggest a dish that can be made from them.  
+- If adding more ingredients improves the dish, recommend them.  
+- If the user asks for a specific dish, provide a structured recipe.  
+- Instructions must be in a stepwise manner.  
+- Avoid spelling mistakes and typos.  
+- DO NOT include any text explanations before or after the JSON response.  
+
+Return ONLY a valid JSON object with the following structure:  
+
+{
+    "title": "Dish Name",
+    "ingredients": ["ingredient1", "ingredient2", "ingredient3"],
+    "instructions": ["Step 1", "Step 2", "Step 3", "Step 4"]
+}
+`;
 
   const result = await model.generateContent(query);
   const responseText = result.response.text();
