@@ -4,13 +4,13 @@ import { FaRobot, FaUtensils, FaClipboardList } from "react-icons/fa";
 const NavigationButtons = () => {
   return (
     <div className="flex justify-center px-4">
-      <div className="flex flex-row gap-2 sm:gap-4 bg-yellow-500 p-2 sm:p-3 rounded-full shadow-lg mb-3 overflow-x-auto">
+      <div className="flex flex-row gap-2 sm:gap-4 bg-yellow-500 p-2 sm:p-3 rounded-full shadow-lg mb-3 w-full sm:max-w-[450px] justify-center">
         {/* Generate AI Button */}
         <Link
           to="/generate-ai"
           className="flex items-center gap-2 bg-white text-gray-800 px-4 sm:px-5 py-2 rounded-full font-semibold shadow-md hover:bg-gray-100 transition text-xs sm:text-sm w-full sm:w-auto justify-center"
         >
-          <FaRobot size={16} className="sm:size-18" />
+          <FaRobot size={18} />
           Generate AI
         </Link>
 
@@ -19,7 +19,7 @@ const NavigationButtons = () => {
           to="/meal-finder"
           className="flex items-center gap-2 bg-white text-gray-800 px-4 sm:px-5 py-2 rounded-full font-semibold shadow-md hover:bg-gray-100 transition text-xs sm:text-sm w-full sm:w-auto justify-center"
         >
-          <FaUtensils size={16} className="sm:size-18" />
+          <FaUtensils size={18} />
           Meal Finder
         </Link>
 
@@ -28,7 +28,7 @@ const NavigationButtons = () => {
           to="/get-posts"
           className="flex items-center gap-2 bg-white text-gray-800 px-4 sm:px-5 py-2 rounded-full font-semibold shadow-md hover:bg-gray-100 transition text-xs sm:text-sm w-full sm:w-auto justify-center"
         >
-          <FaClipboardList size={16} className="sm:size-18" />
+          <FaClipboardList size={18} />
           Posts
         </Link>
       </div>

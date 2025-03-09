@@ -97,14 +97,14 @@ export default function RecipeChat() {
       <ToastContainer position="top-right" autoClose={1000} />
       <div className=" flex bg-[#f8f8f8]">
         <div
-          className={`fixed left-0 top-16 h-[calc(100%-4rem)] bg-white shadow-lg p-4 transition-transform duration-300 ${
+          className={`fixed left-0 top-20 h-[calc(100%-4rem)] bg-white shadow-lg p-4 transition-transform duration-300 ${
             sidebarOpen ? "w-72 translate-x-0" : "w-0 -translate-x-full"
           }`}
         >
           {sidebarOpen && (
             <button
               onClick={() => setSidebarOpen(false)}
-              className="absolute top-5 right-2 text-xl"
+              className="absolute top-20 right-2 text-xl"
             >
               <GoSidebarExpand />
             </button>
@@ -142,7 +142,7 @@ export default function RecipeChat() {
         {!sidebarOpen && (
           <button
             onClick={() => setSidebarOpen(true)}
-            className="absolute top-20 left-4 text-xl"
+            className="absolute top-22 left-4 text-xl"
           >
             <GoSidebarCollapse />
           </button>
