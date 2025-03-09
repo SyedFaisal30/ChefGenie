@@ -75,7 +75,7 @@ const UserProfile = () => {
   // 🛠 **Update an Existing Post**
   const updatePost = async () => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
+      const accessToken = localStorage.getItem("ate");
       await axios.put(
         `http://localhost:8000/api/users/update-post/${editingPost}`,
         {
