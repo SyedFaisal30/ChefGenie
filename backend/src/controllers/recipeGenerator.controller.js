@@ -30,8 +30,9 @@ Follow these rules strictly:
 - If adding more ingredients improves the dish, recommend them.  
 - If the user asks for a specific dish, provide a structured recipe.  
 - Instructions must be in a stepwise manner.  
-- Avoid spelling mistakes and typos.  
+- Avoid spelling mistakes.  
 - DO NOT include any text explanations before or after the JSON response.  
+- If gebbrrish don't generate say can't generate recipe for this.
 
 Return ONLY a valid JSON object with the following structure:  
 

@@ -16,7 +16,7 @@ import { verifyJWT } from "../middlewares/verifyJWT.middleware.js";
 import { verifyPrompt } from "../controllers/verifyPrompt.controller.js";
 import { generateRecipe } from "../controllers/recipeGenerator.controller.js";
 import { getUserAiRecipes } from "../controllers/getAiRecipes.controller.js";
-import { deleteAiRecipe } from "../controllers/deleteAiRecipe.cotroller.js";
+import { deleteAiRecipe } from "../controllers/deleteAiRecipe.controller.js";
 
 const router = Router()
  router.route("/signup").post(validateSignup, signup);

@@ -14,7 +14,12 @@ const UserProfile = () => {
   // State for Update Modal
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [editingPost, setEditingPost] = useState(null);
-  const [postData, setPostData] = useState({ title: "", ingredients: "", instructions: "", tags: "" });
+  const [postData, setPostData] = useState({
+    title: "",
+    ingredients: "",
+    instructions: "",
+    tags: "",
+  });
 
   // State for Delete Confirmation
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -34,10 +39,13 @@ const UserProfile = () => {
     setLoading(true);
     setError("");
 
-    try {      
-      const response = await axios.get("http://localhost:8000/api/users/get-user-post", {
-        withCredentials: true,
-      });
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}/api/users/get-user-post`,
+        {
+          withCredentials: true,
+        }
+      );
 
       setPosts(response.data.message || []);
     } catch (error) {
@@ -77,7 +85,9 @@ const UserProfile = () => {
     try {
       const accessToken = localStorage.getItem("ate");
       await axios.put(
-        `http://localhost:8000/api/users/update-post/${editingPost}`,
+        `${
+          import.meta.env.VITE_SERVER_URL
+        }/api/users/update-post/${editingPost}`,
         {
           title: postData.title,
           ingredients: postData.ingredients.split(",").map((i) => i.trim()),
@@ -97,7 +107,9 @@ const UserProfile = () => {
             ? {
                 ...post,
                 title: postData.title,
-                ingredients: postData.ingredients.split(",").map((i) => i.trim()),
+                ingredients: postData.ingredients
+                  .split(",")
+                  .map((i) => i.trim()),
                 instructions: postData.instructions,
                 tags: postData.tags.split(",").map((t) => t.trim()),
               }
@@ -108,7 +120,9 @@ const UserProfile = () => {
       setIsUpdateModalOpen(false); // Close modal
       toast.success("Post updated successfully!");
     } catch (error) {
-      toast.error("Update failed: " + (error.response?.data?.message || "Unknown error"));
+      toast.error(
+        "Update failed: " + (error.response?.data?.message || "Unknown error")
+      );
     }
   };
 
@@ -122,17 +136,26 @@ const UserProfile = () => {
   const deletePost = async () => {
     try {
       const accessToken = localStorage.getItem("accessToken");
-      await axios.delete(`http://localhost:8000/api/users/delete-post/${deletingPostId}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-        withCredentials: true,
-      });
+      await axios.delete(
+        `${
+          import.meta.env.VITE_SERVER_URL
+        }/api/users/delete-post/${deletingPostId}`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          withCredentials: true,
+        }
+      );
 
       // 🆕 **Remove from UI Immediately**
-      setPosts((prevPosts) => prevPosts.filter((post) => post._id !== deletingPostId));
+      setPosts((prevPosts) =>
+        prevPosts.filter((post) => post._id !== deletingPostId)
+      );
       setIsDeleteModalOpen(false);
       toast.success("Post deleted successfully!");
     } catch (error) {
-      toast.error("Delete failed: " + (error.response?.data?.message || "Unknown error"));
+      toast.error(
+        "Delete failed: " + (error.response?.data?.message || "Unknown error")
+      );
     }
   };
 
@@ -151,7 +174,9 @@ const UserProfile = () => {
           <button
             onClick={() => setActiveTab("myPosts")}
             className={`px-4 py-2 cursor-pointer ${
-              activeTab === "myPosts" ? "border-b-2 border-yellow-600 text-yellow-600 font-medium" : "text-gray-500"
+              activeTab === "myPosts"
+                ? "border-b-2 border-yellow-600 text-yellow-600 font-medium"
+                : "text-gray-500"
             }`}
           >
             My Posts
@@ -159,7 +184,9 @@ const UserProfile = () => {
           <button
             onClick={() => setActiveTab("createPost")}
             className={`px-4 py-2 cursor-pointer ${
-              activeTab === "createPost" ? "border-b-2 border-yellow-600 text-yellow-600 font-medium" : "text-gray-500"
+              activeTab === "createPost"
+                ? "border-b-2 border-yellow-600 text-yellow-600 font-medium"
+                : "text-gray-500"
             }`}
           >
             Create Post
@@ -176,14 +203,33 @@ const UserProfile = () => {
               <p className="text-center text-red-500">{error}</p>
             ) : posts.length > 0 ? (
               posts.map((post) => (
-                <div key={post._id} className="mb-4 p-4 border rounded-lg shadow-sm">
+                <div
+                  key={post._id}
+                  className="mb-4 p-4 border rounded-lg shadow-sm"
+                >
                   <h3 className="text-lg font-bold">{post.title}</h3>
-                  <p className="text-sm text-gray-500">Ingredients: {post.ingredients.join(", ")}</p>
-                  <p className="text-sm text-gray-500">Instructions: {post.instructions}</p>
-                  <p className="text-sm text-gray-500">Tags: {post.tags.join(", ")}</p>
+                  <p className="text-sm text-gray-500">
+                    Ingredients: {post.ingredients.join(", ")}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Instructions: {post.instructions}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Tags: {post.tags.join(", ")}
+                  </p>
                   <div className="mt-4 flex gap-2">
-                    <button onClick={() => openUpdateForm(post)} className="px-4 py-2 bg-yellow-600 text-white rounded-lg cursor-pointer">Update</button>
-                    <button onClick={() => openDeleteConfirmation(post._id)} className="px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer">Delete</button>
+                    <button
+                      onClick={() => openUpdateForm(post)}
+                      className="px-4 py-2 bg-yellow-600 text-white rounded-lg cursor-pointer"
+                    >
+                      Update
+                    </button>
+                    <button
+                      onClick={() => openDeleteConfirmation(post._id)}
+                      className="px-4 py-2 bg-red-600 text-white rounded-lg cursor-pointer"
+                    >
+                      Delete
+                    </button>
                   </div>
                 </div>
               ))
@@ -200,13 +246,49 @@ const UserProfile = () => {
           <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
               <h2 className="text-xl font-bold mb-4">Edit Post</h2>
-              <input type="text" name="title" value={postData.title} onChange={handleInputChange} className="w-full mb-2 p-2 border rounded" placeholder="Title" />
-              <textarea name="ingredients" value={postData.ingredients} onChange={handleInputChange} className="w-full mb-2 p-2 border rounded" placeholder="Ingredients (comma separated)" />
-              <textarea name="instructions" value={postData.instructions} onChange={handleInputChange} className="w-full mb-2 p-2 border rounded" placeholder="Instructions" />
-              <input type="text" name="tags" value={postData.tags} onChange={handleInputChange} className="w-full mb-4 p-2 border rounded" placeholder="Tags (comma separated)" />
+              <input
+                type="text"
+                name="title"
+                value={postData.title}
+                onChange={handleInputChange}
+                className="w-full mb-2 p-2 border rounded"
+                placeholder="Title"
+              />
+              <textarea
+                name="ingredients"
+                value={postData.ingredients}
+                onChange={handleInputChange}
+                className="w-full mb-2 p-2 border rounded"
+                placeholder="Ingredients (comma separated)"
+              />
+              <textarea
+                name="instructions"
+                value={postData.instructions}
+                onChange={handleInputChange}
+                className="w-full mb-2 p-2 border rounded"
+                placeholder="Instructions"
+              />
+              <input
+                type="text"
+                name="tags"
+                value={postData.tags}
+                onChange={handleInputChange}
+                className="w-full mb-4 p-2 border rounded"
+                placeholder="Tags (comma separated)"
+              />
               <div className="flex justify-end">
-                <button onClick={updatePost} className="bg-green-500 text-white px-4 py-2 rounded-lg mr-2 cursor-pointer">Save</button>
-                <button onClick={() => setIsUpdateModalOpen(false)} className="bg-gray-400 text-white px-4 py-2 rounded-lg cursor-pointer">Cancel</button>
+                <button
+                  onClick={updatePost}
+                  className="bg-green-500 text-white px-4 py-2 rounded-lg mr-2 cursor-pointer"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => setIsUpdateModalOpen(false)}
+                  className="bg-gray-400 text-white px-4 py-2 rounded-lg cursor-pointer"
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           </div>
@@ -217,10 +299,23 @@ const UserProfile = () => {
           <div className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm z-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
               <h2 className="text-xl font-bold mb-4">Confirm Delete</h2>
-              <p className="mb-4">Are you sure you want to delete this post? This action cannot be undone.</p>
+              <p className="mb-4">
+                Are you sure you want to delete this post? This action cannot be
+                undone.
+              </p>
               <div className="flex justify-end">
-                <button onClick={deletePost} className="bg-red-600 text-white px-4 py-2 rounded-lg mr-2 cursor-pointer">Delete</button>
-                <button onClick={() => setIsDeleteModalOpen(false)} className="bg-gray-400 text-white px-4 py-2 rounded-lg cursor-pointer">Cancel</button>
+                <button
+                  onClick={deletePost}
+                  className="bg-red-600 text-white px-4 py-2 rounded-lg mr-2 cursor-pointer"
+                >
+                  Delete
+                </button>
+                <button
+                  onClick={() => setIsDeleteModalOpen(false)}
+                  className="bg-gray-400 text-white px-4 py-2 rounded-lg cursor-pointer"
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           </div>

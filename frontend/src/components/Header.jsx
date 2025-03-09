@@ -24,7 +24,7 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:8000/api/users/signout",
+        `${import.meta.env.VITE_SERVER_URL}/api/users/signout`,
         {},
         { withCredentials: true }
       );

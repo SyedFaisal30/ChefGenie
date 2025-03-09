@@ -13,6 +13,7 @@ export default function RecipeChat() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({ username: "" });
+  const [checking, setChecking] = useState(false);
 
   useEffect(() => {
     const username = localStorage.getItem("username");
@@ -26,7 +27,9 @@ export default function RecipeChat() {
   const fetchUserRecipes = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8000/api/users/get-ai-recipes/${user.username}`
+        `${import.meta.env.VITE_SERVER_URL}/api/users/get-ai-recipes/${
+          user.username
+        }`
       );
       setRecipes(data?.data || []);
     } catch (error) {
@@ -38,8 +41,16 @@ export default function RecipeChat() {
     if (!prompt.trim()) return;
     setLoading(true);
     try {
+      const verifyResponse= await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/users/verify-prompt`,
+        {prompt}
+      );
+      if (!verifyResponse.data.data.isPromptValid) {
+        console.error("Invalid prompt:", verifyResponse.data.message);
+        toast.error("Please enter a valid prompt related to a recipe.");
+      }
+  
       const { data } = await axios.post(
-        "http://localhost:8000/api/users/generate-ai",
+        `${import.meta.env.VITE_SERVER_URL}/api/users/generate-ai`,
         {
           prompt,
           username: user.username,
@@ -59,7 +70,9 @@ export default function RecipeChat() {
     try {
       const accessToken = localStorage.getItem("accessToken");
       const response = await axios.delete(
-        `http://localhost:8000/api/users/delete-recipe/${recipeId}`,
+        `${
+          import.meta.env.VITE_SERVER_URL
+        }/api/users/delete-recipe/${recipeId}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
           withCredentials: true,
@@ -81,7 +94,7 @@ export default function RecipeChat() {
   return (
     <div className="h-[90vh]  bg-[#f8f8f8] flex flex-col items-center justify-center p-4">
       <NavigationButtons />
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={1000} />
       <div className=" flex bg-[#f8f8f8]">
         <div
           className={`fixed left-0 top-16 h-[calc(100%-4rem)] bg-white shadow-lg p-4 transition-transform duration-300 ${
@@ -157,25 +170,30 @@ export default function RecipeChat() {
             </div>
             <h4 className="text-xl font-semibold">📜 Instructions:</h4>
             <div className="mt-2 space-y-2">
-  {selectedRecipe?.instructions ? (
-    Array.isArray(selectedRecipe.instructions) ? (
-      selectedRecipe.instructions.map((step, idx) => (
-        <p key={`${selectedRecipe._id}-step-${idx}`} className="text-gray-700">
-          <strong>Step {idx + 1}:</strong> {step}
-        </p>
-      ))
-    ) : (
-      selectedRecipe.instructions.split("\n").map((step, idx) => (
-        <p key={`${selectedRecipe._id}-step-${idx}`} className="text-gray-700">
-          <strong>Step {idx + 1}:</strong> {step}
-        </p>
-      ))
-    )
-  ) : (
-    <p className="text-gray-500">No instructions available.</p>
-  )}
-</div>
-
+              {selectedRecipe?.instructions ? (
+                Array.isArray(selectedRecipe.instructions) ? (
+                  selectedRecipe.instructions.map((step, idx) => (
+                    <p
+                      key={`${selectedRecipe._id}-step-${idx}`}
+                      className="text-gray-700"
+                    >
+                      <strong>Step {idx + 1}:</strong> {step}
+                    </p>
+                  ))
+                ) : (
+                  selectedRecipe.instructions.split("\n").map((step, idx) => (
+                    <p
+                      key={`${selectedRecipe._id}-step-${idx}`}
+                      className="text-gray-700"
+                    >
+                      <strong>Step {idx + 1}:</strong> {step}
+                    </p>
+                  ))
+                )
+              ) : (
+                <p className="text-gray-500">No instructions available.</p>
+              )}
+            </div>
           </div>
         ) : (
           <p className="text-gray-500 text-lg text-center">

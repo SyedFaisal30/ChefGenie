@@ -4,7 +4,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
 const SignInForm = () => {
   const {
     register,
@@ -22,14 +22,15 @@ const SignInForm = () => {
     setLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/users/signin",
+        `${import.meta.env.VITE_SERVER_URL}/api/users/signin`,
         data,
         {
           withCredentials: true,
         }
       );
 
-      const { accessTokenExpiry, refreshTokenExpiry, username } = res.data.message;
+      const { accessTokenExpiry, refreshTokenExpiry, username } =
+        res.data.message;
       const { email } = data;
 
       localStorage.setItem("ate", accessTokenExpiry);
@@ -60,7 +61,7 @@ const SignInForm = () => {
     setResetLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:8000/api/users/forget-password",
+        `${import.meta.env.VITE_SERVER_URL}/api/users/forget-password`,
         { email: emailForReset }
       );
 

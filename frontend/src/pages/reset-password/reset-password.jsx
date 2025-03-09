@@ -28,13 +28,16 @@ const ResetPassword = () => {
 
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:8000/api/users/reset-password", {
-        token,
-        newPassword,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_SERVER_URL}/api/users/reset-password`,
+        {
+          token,
+          newPassword,
+        }
+      );
 
       toast.success(res.data.message);
-      setTimeout(() => navigate("/signin"), 2000); 
+      setTimeout(() => navigate("/signin"), 2000);
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
@@ -52,7 +55,9 @@ const ResetPassword = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-gray-700 font-medium">New Password</label>
+            <label className="block text-gray-700 font-medium">
+              New Password
+            </label>
             <input
               type="password"
               className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-yellow-500 outline-none"
@@ -64,7 +69,9 @@ const ResetPassword = () => {
           </div>
 
           <div>
-            <label className="block text-gray-700 font-medium">Confirm Password</label>
+            <label className="block text-gray-700 font-medium">
+              Confirm Password
+            </label>
             <input
               type="password"
               className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-yellow-500 outline-none"

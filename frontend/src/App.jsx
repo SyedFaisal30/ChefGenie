@@ -22,7 +22,7 @@ function App() {
   const refreshTokens = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/users/refresh-tokens",
+        `${import.meta.env.VITE_SERVER_URL}/api/users/refresh-tokens`,
         { withCredentials: true }
       );
 
@@ -46,7 +46,7 @@ function App() {
 
   const logout = async () => {
     try {
-      await axios.get("http://localhost:8000/api/users/signout", {
+      await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/users/signout`, {
         withCredentials: true,
       });
       localStorage.removeItem("ate");
@@ -69,7 +69,7 @@ function App() {
       const ate = localStorage.getItem("ate");
       const rte = localStorage.getItem("rte");
       const currentTime = Date.now();
-      
+
       if (ate && rte) {
         if (Number(rte) > currentTime) {
           // Refresh token is valid
@@ -87,11 +87,11 @@ function App() {
           logout();
         }
       }
-      
+
       // Finish loading regardless of auth status
       setIsLoading(false);
     };
-    
+
     checkAuth();
   }, []);
 

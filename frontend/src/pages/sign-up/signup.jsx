@@ -9,7 +9,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom"; // Import Link for navigation
 
 const SignupForm = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: zodResolver(signUpSchema),
   });
 
@@ -22,13 +26,20 @@ const SignupForm = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:8000/api/users/signup", data);
+      const res = await axios.post(
+        `${import.meta.env.VITE_SERVER_URL}/api/users/signup`,
+        data
+      );
       setUserData(data);
       setStep("verify");
-      toast.success("✅ Verification Email Sent! Check your inbox.", { autoClose: 3000 });
+      toast.success("✅ Verification Email Sent! Check your inbox.", {
+        autoClose: 3000,
+      });
     } catch (error) {
       console.error("❌ Signup Error:", error.response?.data);
-      toast.error(error.response?.data?.message || "Signup failed", { autoClose: 3000 });
+      toast.error(error.response?.data?.message || "Signup failed", {
+        autoClose: 3000,
+      });
     } finally {
       setLoading(false);
     }
@@ -36,22 +47,29 @@ const SignupForm = () => {
 
   const handleVerification = async () => {
     if (!verificationCode) {
-      toast.error("⚠️ Please enter the verification code!", { autoClose: 3000 });
+      toast.error("⚠️ Please enter the verification code!", {
+        autoClose: 3000,
+      });
       return;
     }
-    
+
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:8000/api/users/verify", {
-        username: userData.username,
-        code: verificationCode,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_SERVER_URL}/api/users/verify`,
+        {
+          username: userData.username,
+          code: verificationCode,
+        }
+      );
 
       toast.success("🎉 Account Verified Successfully!", { autoClose: 3000 });
       setStep("success");
     } catch (error) {
       console.error("❌ Verification Error:", error.response?.data);
-      toast.error(error.response?.data?.message || "Verification failed", { autoClose: 3000 });
+      toast.error(error.response?.data?.message || "Verification failed", {
+        autoClose: 3000,
+      });
     } finally {
       setLoading(false);
     }
@@ -63,17 +81,25 @@ const SignupForm = () => {
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
         {step === "signup" && (
           <>
-            <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Sign Up</h2>
+            <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+              Sign Up
+            </h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div>
-                <label className="block text-gray-700 font-medium">Username</label>
+                <label className="block text-gray-700 font-medium">
+                  Username
+                </label>
                 <input
                   type="text"
                   {...register("username")}
                   className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-yellow-500 outline-none"
                   placeholder="Enter your username"
                 />
-                {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
+                {errors.username && (
+                  <p className="text-red-500 text-sm">
+                    {errors.username.message}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -84,11 +110,15 @@ const SignupForm = () => {
                   className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-yellow-500 outline-none"
                   placeholder="Enter your email"
                 />
-                {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email.message}</p>
+                )}
               </div>
 
               <div className="relative">
-                <label className="block text-gray-700 font-medium">Password</label>
+                <label className="block text-gray-700 font-medium">
+                  Password
+                </label>
                 <input
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
@@ -102,7 +132,11 @@ const SignupForm = () => {
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
-                {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+                {errors.password && (
+                  <p className="text-red-500 text-sm">
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
 
               <button
@@ -110,7 +144,11 @@ const SignupForm = () => {
                 className="w-full bg-yellow-600 text-white py-2 rounded-lg font-bold hover:bg-yellow-700 transition flex justify-center"
                 disabled={loading}
               >
-                {loading ? <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span> : "Sign Up"}
+                {loading ? (
+                  <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span>
+                ) : (
+                  "Sign Up"
+                )}
               </button>
             </form>
 
@@ -129,9 +167,12 @@ const SignupForm = () => {
 
         {step === "verify" && (
           <>
-            <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Verify Account</h2>
+            <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+              Verify Account
+            </h2>
             <p className="text-center text-gray-600 mb-4">
-              Enter the verification code sent to <strong>{userData?.email}</strong>
+              Enter the verification code sent to{" "}
+              <strong>{userData?.email}</strong>
             </p>
 
             <div className="space-y-4">
@@ -148,7 +189,11 @@ const SignupForm = () => {
                 className="w-full bg-green-600 text-white py-2 rounded-lg font-bold hover:bg-green-700 transition flex justify-center"
                 disabled={loading}
               >
-                {loading ? <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span> : "Verify"}
+                {loading ? (
+                  <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span>
+                ) : (
+                  "Verify"
+                )}
               </button>
             </div>
           </>
@@ -156,7 +201,9 @@ const SignupForm = () => {
 
         {step === "success" && (
           <>
-            <h2 className="text-2xl font-bold text-center text-green-600 mb-6">✅ Verified</h2>
+            <h2 className="text-2xl font-bold text-center text-green-600 mb-6">
+              ✅ Verified
+            </h2>
             <p className="text-center text-gray-600 mb-4">
               Your account has been successfully verified. You can now sign in.
             </p>
