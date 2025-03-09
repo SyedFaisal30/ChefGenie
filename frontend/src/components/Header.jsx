@@ -39,10 +39,12 @@ const Header = () => {
   return (
     <header className="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md shadow-md z-50">
       <div className="flex justify-between items-center p-4 max-w-7xl mx-auto">
-        <Link to="/">
-          <h1 className="text-2xl font-bold text-gray-900">ChefGenie</h1>
-        </Link>
-
+        <div className="flex gap-1">
+          <img src="/logo.png" alt="ChefGenie Logo" className="h-12 w-12" />
+          <Link to="/" className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-gray-900">ChefGenie</h1>
+          </Link>
+        </div>
         <div className="flex items-center gap-6 relative">
           <div className="relative">
             {username ? (
