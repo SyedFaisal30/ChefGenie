@@ -41,14 +41,15 @@ export default function RecipeChat() {
     if (!prompt.trim()) return;
     setLoading(true);
     try {
-      const verifyResponse= await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/users/verify-prompt`,
-        {prompt}
+      const verifyResponse = await axios.post(
+        `${import.meta.env.VITE_SERVER_URL}/api/users/verify-prompt`,
+        { prompt }
       );
       if (!verifyResponse.data.data.isPromptValid) {
         console.error("Invalid prompt:", verifyResponse.data.message);
         toast.error("Please enter a valid prompt related to a recipe.");
       }
-  
+
       const { data } = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/api/users/generate-ai`,
         {
@@ -97,7 +98,7 @@ export default function RecipeChat() {
       <ToastContainer position="top-right" autoClose={1000} />
       <div className=" flex bg-[#f8f8f8]">
         <div
-          className={`fixed left-0 top-20 h-[calc(100%-4rem)] bg-white shadow-lg p-4 transition-transform duration-300 ${
+          className={`fixed left-0 top-20 h-[calc(100%-4rem)] bg-white shadow-lg p-4 transition-transform duration-300 overflow-y-auto ${
             sidebarOpen ? "w-72 translate-x-0" : "w-0 -translate-x-full"
           }`}
         >

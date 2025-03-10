@@ -10,7 +10,7 @@ export const getUserAiRecipes = asyncHandler(async (req, res) => {
         return res.status(400).json(new ApiError(400, false, "Username is required", []));
     }
 
-    const recipes = await Recipe.find({user: username });
+    const recipes = await Recipe.find({ user: username });
 
     if(!recipes || recipes.length === 0){
         return res.status(404).json(new ApiError(404, false, "No recipes found", []));
