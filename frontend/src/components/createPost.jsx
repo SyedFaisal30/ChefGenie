@@ -12,7 +12,7 @@ const CreatePostForm = ({ addPost }) => {
 
   const onSubmit = async (data) => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
+      const accessToken = localStorage.getItem("ate");
 
       if (!accessToken) {
         throw new Error("Authentication error. Please log in again.");
@@ -29,9 +29,7 @@ const CreatePostForm = ({ addPost }) => {
         `${import.meta.env.VITE_SERVER_URL}/api/users/create-post`,
         postData,
         {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+          withCredentials: true,
         }
       );
 
