@@ -15,7 +15,6 @@ export const updatePost = asyncHandler( async (req, res) => {
         _id: new mongoose.Types.ObjectId(postId), 
         author: new mongoose.Types.ObjectId(userId),       
     });     
-    // console.log("POST ID ",postId, " USER ID ", userId);
     if (!post) {
         return res.status(404).json(new ApiError(404, false, "Post not found or you are not authorized", []));
     }
